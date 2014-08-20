@@ -20,7 +20,6 @@
             <groupId>org.bukkit</groupId>
             <artifactId>Bukkit</artifactId>
             <version>1.7.9-R0.2</version>
-            <scope>Provided</scope>
         </dependency>
 
         <dependency>

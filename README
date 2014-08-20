@@ -1,0 +1,1 @@
+Simple plugin channel listener plugin to listen to a configured channel and respond on same channel with the players current world UUID.

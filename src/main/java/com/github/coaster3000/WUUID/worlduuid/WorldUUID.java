@@ -11,6 +11,10 @@ public class WorldUUID extends JavaPlugin implements PluginMessageListener {
 
 	private String encoding;
 
+	private boolean registered = false;
+	private String channel;
+	private boolean informPlayer;
+
 	public void onEnable() {
 		reloadConfigSettings();
 	}
@@ -31,10 +35,6 @@ public class WorldUUID extends JavaPlugin implements PluginMessageListener {
 		register();
 	}
 
-	private boolean registered = false;
-	private String  channel;
-	private boolean informPlayer;
-
 	public void register() {
 		registered = true;
 		Bukkit.getMessenger().registerIncomingPluginChannel(this, channel, this);
@@ -46,26 +46,16 @@ public class WorldUUID extends JavaPlugin implements PluginMessageListener {
 	}
 
 	public void onPluginMessageReceived(String channel, Player player,
-			byte[] bytes) {
-		if (!channel.equals(this.channel) && verify(bytes)) {
-			return;
-		}
+	                                    byte[] bytes) {
+		if (!channel.equals(this.channel)) return;
 		try {
-
-			byte[] data = player.getWorld().getUID().toString().getBytes(encoding);
-			player.sendPluginMessage(this, channel, data);
+			player.sendPluginMessage(this, channel, player.getWorld().getUID().toString().getBytes(encoding));
 		} catch (Throwable t) {
-			if (informPlayer) {
-				player.sendMessage(
-						ChatColor.RED + "An error occurred sending world UUID!");
-				player.sendMessage(
-						ChatColor.GRAY + "Please check server logs for details...");
-			}
 			t.printStackTrace();
+			if (informPlayer) player.sendMessage(new String[]{
+					ChatColor.RED + "An error occurred sending world UUID!",
+					ChatColor.GRAY + "Please check server logs for details..."
+			});
 		}
-	}
-
-	private boolean verify(byte[] bytes) { //Used to provide checks to protocol. However currently unimplemented.
-		return true;
 	}
 }

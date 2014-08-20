@@ -9,6 +9,8 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 
 public class WorldUUID extends JavaPlugin implements PluginMessageListener {
 
+	private String encoding;
+
 	public void onEnable() {
 		reloadConfig();
 	}
@@ -24,6 +26,7 @@ public class WorldUUID extends JavaPlugin implements PluginMessageListener {
 
 		informPlayer = config.getBoolean("inform-player", false);
 		channel = config.getString("plugin-channel", "world_uid");
+		encoding = config.getString("encoding", "UTF-8");
 
 		register();
 	}
@@ -49,7 +52,7 @@ public class WorldUUID extends JavaPlugin implements PluginMessageListener {
 		}
 		try {
 
-			byte[] data = player.getWorld().getUID().toString().getBytes("UTF-8");
+			byte[] data = player.getWorld().getUID().toString().getBytes(encoding);
 			player.sendPluginMessage(this, channel, data);
 		} catch (Throwable t) {
 			if (informPlayer) {

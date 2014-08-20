@@ -12,14 +12,14 @@ public class WorldUUID extends JavaPlugin implements PluginMessageListener {
 	private String encoding;
 
 	public void onEnable() {
-		reloadConfig();
+		reloadConfigSettings();
 	}
 
 	public void onDisable() {
 		unregister();
 	}
 
-	public void reloadConfig() {
+	public void reloadConfigSettings() {
 		unregister();
 		FileConfiguration config = getConfig();
 		config.options().copyDefaults(true);

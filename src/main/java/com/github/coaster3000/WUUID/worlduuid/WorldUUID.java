@@ -37,11 +37,15 @@ public class WorldUUID extends JavaPlugin implements PluginMessageListener {
 
 	public void register() {
 		registered = true;
-		Bukkit.getMessenger().registerIncomingPluginChannel(this, channel, this);
+		getServer().getMessenger().registerOutgoingPluginChannel(this, channel);
+		getServer().getMessenger().registerIncomingPluginChannel(this, channel, this);
 	}
 
 	public void unregister() {
-		if (registered) Bukkit.getMessenger().unregisterIncomingPluginChannel(this, channel, this);
+		if (registered) {
+			getServer().getMessenger().unregisterIncomingPluginChannel(this, channel, this);
+			getServer().getMessenger().unregisterOutgoingPluginChannel(this, channel);
+		}
 		registered = false;
 	}
 

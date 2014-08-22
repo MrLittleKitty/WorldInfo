@@ -1,6 +1,10 @@
-name: WUUID
+name: WorldInfo
 description: Provides plugin channel response of the current world UUID provided by bukkit.
 author: Chris (Coaster3000 | Coaster4321)
 website: www.github.com/coaster3000/WUUID
 version: ${project.version}
-main: com.github.coaster3000.WUUID.worlduuid.WorldUUID
+main: tk.coaster3000.worldinfo.WorldInfoPlugin
+commands:
+    reloadWorldInfo:
+        description: Execute the current debug code.
+        

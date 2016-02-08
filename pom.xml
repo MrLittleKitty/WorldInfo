@@ -6,7 +6,7 @@
 
     <groupId>tk.coaster3000</groupId>
     <artifactId>WorldInfo</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.3.1</version>
 
     <repositories>
 		<repository>

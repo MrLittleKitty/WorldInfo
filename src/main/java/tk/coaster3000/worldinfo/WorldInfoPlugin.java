@@ -22,6 +22,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -31,7 +32,7 @@ public class WorldInfoPlugin extends JavaPlugin implements PluginMessageListener
 	public static final byte[] ZERO_BYTES = new byte[0];
 
 	private String encoding;
-	private String channel;
+	private List<String> channels;
 	private boolean informPlayer;
 	private ID_MODE idMode;
 	private Logger log;
@@ -72,7 +73,11 @@ public class WorldInfoPlugin extends JavaPlugin implements PluginMessageListener
 		config.options().copyDefaults(true);
 
 		informPlayer = config.getBoolean("inform-player", false);
-		channel = config.getString("plugin-channel", "world_id");
+		channels = config.getStringList("plugin-channels");
+		if (channels.size() == 0) {
+			channels.add("world_id"); // Add default
+		}
+		
 		encoding = config.getString("encoding", "UTF-8");
 		idMode = ID_MODE.valueOf(config.getString("mode", ID_MODE.NAME.name()).toUpperCase(Locale.ENGLISH));
 
@@ -82,8 +87,11 @@ public class WorldInfoPlugin extends JavaPlugin implements PluginMessageListener
 	public void register() {
 		registered = true;
 		Bukkit.getPluginManager().registerEvents(this, this);
-		getServer().getMessenger().registerOutgoingPluginChannel(this, channel);
-		getServer().getMessenger().registerIncomingPluginChannel(this, channel, this);
+		
+		for (String channel : channels) {
+			getServer().getMessenger().registerOutgoingPluginChannel(this, channel);
+			getServer().getMessenger().registerIncomingPluginChannel(this, channel, this);
+		}
 	}
 
 	@Override
@@ -132,14 +140,16 @@ public class WorldInfoPlugin extends JavaPlugin implements PluginMessageListener
 
 	public void unregister() {
 		if (registered) {
-			getServer().getMessenger().unregisterIncomingPluginChannel(this, channel, this);
-			getServer().getMessenger().unregisterOutgoingPluginChannel(this, channel);
+			for (String channel : channels) {
+				getServer().getMessenger().unregisterIncomingPluginChannel(this, channel, this);
+				getServer().getMessenger().unregisterOutgoingPluginChannel(this, channel);
+			}
 			HandlerList.unregisterAll((Listener) this);
 		}
 		registered = false;
 	}
 
-	private void sendData(Player player, byte packetID, byte[] data) {
+	private void sendData(Player player, String channel, byte packetID, byte[] data) {
 		ByteBuffer buffer = ByteBuffer.allocate(2 + data.length).put(packetID).put((byte) data.length).put
 				(data);
 		player.sendPluginMessage(this, channel, buffer.array());
@@ -175,7 +185,15 @@ public class WorldInfoPlugin extends JavaPlugin implements PluginMessageListener
 	                                    byte[] bytes) {
 		log.info("Message received from " + player.getName());
 
-		if (!channel.equals(this.channel)) {
+		boolean match = false;
+		for(String ch : channels) {
+			if (channel.equals(ch)) {
+				match = true;
+			}
+		}
+		
+		// Warn if message received on a non-existent channel
+		if (!match) {
 			if (informPlayer) {
 				player.sendMessage("Message Recieved but was not the same channel.");
 			}
@@ -183,7 +201,7 @@ public class WorldInfoPlugin extends JavaPlugin implements PluginMessageListener
 		}
 		try {
 			if (informPlayer) {
-				player.sendMessage("Message recieved and sending data...");
+				player.sendMessage("Message recieved and sending data on channel " + channel);
 			}
 
 			World w = player.getWorld();
@@ -202,7 +220,7 @@ public class WorldInfoPlugin extends JavaPlugin implements PluginMessageListener
 					break;
 			}
 
-			sendData(player, (byte) 0, data);
+			sendData(player, channel, (byte) 0, data);
 		} catch (Throwable t) {
 			t.printStackTrace();
 			if (informPlayer && player.isOnline()) player.sendMessage(new String[]{

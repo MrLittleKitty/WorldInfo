@@ -1,7 +1,9 @@
-plugin-channel: world_id
+plugin-channels:
+  - world_id
+  - world_info
 inform-player: false
 encoding: UTF-8
-mode: NAME
+mode: UUID
 # valid: FILE (put world.id file in each world folder)
 #        NAME (use world name - default)
 #        UUID (use world UUID)

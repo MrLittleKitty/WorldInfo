@@ -191,9 +191,16 @@ public class WorldInfoPlugin extends JavaPlugin implements PluginMessageListener
 
 			World w = player.getWorld();
 
-
+			ID_MODE mode = idMode;
+			if(bytes.length != 0) {
+				try {
+					mode = ID_MODE.valueOf(new String(bytes));
+				} catch (IllegalArgumentException e) {
+					mode = idMode;
+				}
+			}
 			byte[] data = ZERO_BYTES;
-			switch (idMode) {
+			switch (mode) {
 				case NAME:
 					data = w.getName().getBytes(encoding);
 					break;

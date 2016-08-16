@@ -1,4 +1,14 @@
-package tk.coaster3000.worldinfo;
+package co.civcraft.worldinfo;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+import java.util.logging.Logger;
 
 import com.google.common.io.LineReader;
 import org.bukkit.Bukkit;
@@ -17,24 +27,18 @@ import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
-import java.util.logging.Logger;
-
 public class WorldInfoPlugin extends JavaPlugin implements PluginMessageListener, Listener {
 
 	public static final byte[] ZERO_BYTES = new byte[0];
 
 	private String encoding;
+
 	private List<String> channels;
+
 	private boolean informPlayer;
+
 	private ID_MODE idMode;
+
 	private Logger log;
 
 	private boolean registered = false;
@@ -77,7 +81,7 @@ public class WorldInfoPlugin extends JavaPlugin implements PluginMessageListener
 		if (channels.size() == 0) {
 			channels.add("world_id"); // Add default
 		}
-		
+
 		encoding = config.getString("encoding", "UTF-8");
 		idMode = ID_MODE.valueOf(config.getString("mode", ID_MODE.NAME.name()).toUpperCase(Locale.ENGLISH));
 
@@ -87,7 +91,7 @@ public class WorldInfoPlugin extends JavaPlugin implements PluginMessageListener
 	public void register() {
 		registered = true;
 		Bukkit.getPluginManager().registerEvents(this, this);
-		
+
 		for (String channel : channels) {
 			getServer().getMessenger().registerOutgoingPluginChannel(this, channel);
 			getServer().getMessenger().registerIncomingPluginChannel(this, channel, this);
@@ -155,8 +159,6 @@ public class WorldInfoPlugin extends JavaPlugin implements PluginMessageListener
 		player.sendPluginMessage(this, channel, buffer.array());
 	}
 
-
-
 	private String getFileID(World w) {
 		String ret = null;
 		FileReader fr = null;
@@ -182,7 +184,7 @@ public class WorldInfoPlugin extends JavaPlugin implements PluginMessageListener
 	}
 
 	public void onPluginMessageReceived(String channel, Player player,
-	                                    byte[] bytes) {
+			byte[] bytes) {
 		log.info("Message received from " + player.getName());
 		try {
 			if (informPlayer) {
@@ -216,6 +218,7 @@ public class WorldInfoPlugin extends JavaPlugin implements PluginMessageListener
 	}
 
 	enum ID_MODE {
-		UUID, NAME, FILE;
+		UUID, NAME, FILE
 	}
+
 }

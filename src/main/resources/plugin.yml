@@ -1,10 +1,10 @@
-name: ${project.name}
-description: Provides plugin channel response of the current world UUID provided by bukkit.
+name: ${name}
+description: ${description}
 author: Chris (Coaster3000 | Coaster4321)
 authors: [ProgrammerDan, PatchyKnowly]
-website: www.github.com/Civcraft/WorldInfo
-version: ${project.version}
-main: tk.coaster3000.worldinfo.WorldInfoPlugin
+website: ${url}
+version: ${version}
+main: ${groupId}.${name}Plugin
 commands:
  reloadWorldInfo:
   description: Execute the current debug code.

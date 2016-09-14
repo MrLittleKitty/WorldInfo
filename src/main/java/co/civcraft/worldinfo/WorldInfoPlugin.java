@@ -196,7 +196,8 @@ public class WorldInfoPlugin extends JavaPlugin implements PluginMessageListener
 			ID_MODE mode = idMode;
 			if(bytes.length != 0) {
 				try {
-					mode = ID_MODE.valueOf(new String(bytes));
+					//Dont forget to specify your character set boys and girls
+					mode = ID_MODE.valueOf(new String(bytes,encoding));
 				} catch (IllegalArgumentException e) {
 					mode = idMode;
 				}

@@ -2,6 +2,7 @@ plugin-channels:
   - world_id
   - world_info
   - world_identifier
+  - world_name
 inform-player: false
 encoding: UTF-8
 mode: UUID

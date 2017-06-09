@@ -6,23 +6,23 @@
 
   <groupId>co.civcraft.worldinfo</groupId>
   <artifactId>worldinfo</artifactId>
-  <version>1.1.1</version>
+  <version>1.2.0</version>
 
   <name>WorldInfo</name>
   <description>Provides plugin channel response of the current world UUID provided by bukkit.</description>
-  <url>https://github.com/Civcraft/WorldInfo/</url>
+  <url>https://github.com/Devoted/WorldInfo/</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.10-R0.1-SNAPSHOT</version>
+      <version>1.12-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
 

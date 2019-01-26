@@ -1,0 +1,35 @@
+plugins {
+    id 'com.github.johnrengelman.shadow'
+}
+
+import org.apache.tools.ant.filters.ReplaceTokens
+
+version = project.property('version')
+sourceCompatibility = project.property('sourceversion')
+
+dependencies {
+
+//    pluginDependencies group: 'vg.civcraft.mc.civmodcore', name: 'CivModCore', version: '1.7.0'
+//    // Provided local jars (not needed on runtime)
+//    nonPluginDependencies fileTree(dir: 'libs/provided', include: '*.jar')
+//
+//    // Other plugins this plugin depends on
+//    pluginDependencies fileTree(dir: 'libs/plugins', include: '*.jar')
+//
+//    // Jars to include in that shaded jar
+//    compile fileTree(dir: 'libs/compile', include: '*.jar')
+}
+
+shadowJar {
+    baseName = project.property('name')
+    classifier = ''
+
+    // add jars that need to be relocated to another namespace here
+    // relocate 'org.apache.commons.lang3', project.group + '.org.apache.commons.lang3'
+}
+
+jar {
+    actions = []
+    dependsOn = []
+    dependsOn('shadowJar')
+}

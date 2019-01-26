@@ -1,10 +1,10 @@
-name: ${name}
-description: ${description}
+name: @name@
+description: @description@
 author: Chris (Coaster3000 | Coaster4321)
 authors: [ProgrammerDan, PatchyKnowly, Mr_Little_Kitty]
-website: ${url}
-version: ${version}
-main: ${groupId}.${name}Plugin
+website: @website@
+version: @version@-@apiversion@
+main: @mainClass@
 commands:
  reloadWorldInfo:
   description: Execute the current debug code.
